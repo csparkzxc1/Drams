@@ -40,6 +40,18 @@ const translations: Record<string, Record<Lang, string>> = {
   "owned": { ko: "보유", en: "Owned" },
   "tasted": { ko: "시음", en: "Tasted" },
   "wishlist": { ko: "위시", en: "Wishlist" },
+  "next": { ko: "다음", en: "Next" },
+  "back": { ko: "이전", en: "Back" },
+  "log_this_dram": { ko: "잔을 기록한다", en: "Log this dram" },
+  "select_bottle": { ko: "보틀 선택", en: "Select bottle" },
+  "from_cellar": { ko: "내 셀러에서 선택", en: "From my cellar" },
+  "selected": { ko: "선택됨", en: "Selected" },
+  "confirm_delete": { ko: "정말 삭제하시겠습니까?", en: "Delete this?" },
+  "location": { ko: "장소", en: "Location" },
+  "companions": { ko: "동행", en: "Companions" },
+  "serving_style": { ko: "서빙 스타일", en: "Serving style" },
+  "add_note": { ko: "기록", en: "Log" },
+  "no_notes_yet": { ko: "아직 기록이 없습니다", en: "No notes yet" },
 };
 
 type I18nContextValue = {
