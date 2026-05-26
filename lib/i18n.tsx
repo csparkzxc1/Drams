@@ -52,6 +52,16 @@ const translations: Record<string, Record<Lang, string>> = {
   "serving_style": { ko: "서빙 스타일", en: "Serving style" },
   "add_note": { ko: "기록", en: "Log" },
   "no_notes_yet": { ko: "아직 기록이 없습니다", en: "No notes yet" },
+  "distilleries": { ko: "증류소", en: "Distilleries" },
+  "avg_abv": { ko: "평균 abv", en: "Avg. ABV" },
+  "highest_rated": { ko: "최고 평점", en: "Highest rated" },
+  "lowest_rated": { ko: "최저 평점", en: "Lowest rated" },
+  "rating_distribution": { ko: "평점 분포", en: "Rating distribution" },
+  "monthly_activity": { ko: "월별 활동", en: "Monthly activity" },
+  "type_distribution": { ko: "유형 분포", en: "Type distribution" },
+  "top_distilleries": { ko: "자주 마시는 증류소", en: "Top distilleries" },
+  "serving_styles": { ko: "서빙 스타일", en: "Serving style" },
+  "top_tags": { ko: "자주 쓰는 태그", en: "Top tags" },
 };
 
 type I18nContextValue = {
