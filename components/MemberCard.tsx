@@ -13,36 +13,71 @@ export default function MemberCard() {
       ? String(member.memberNumber).padStart(4, "0")
       : null;
 
+  const sinceDisplay = new Date(member.memberSince).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
   return (
-    <div className="bg-cask rounded-xl p-5 border border-border relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-32 h-32 bg-amber/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+    <div className="card-gold shimmer p-6">
+      {/* Top ornament */}
+      <div className="flex justify-center mb-5">
+        <div className="flex flex-col items-center">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="mb-2 opacity-40">
+            <path d="M14 2L16.5 9.5H24L18 14.5L20 22L14 17.5L8 22L10 14.5L4 9.5H11.5L14 2Z" stroke="#D4A056" strokeWidth="0.75"/>
+          </svg>
+          <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-gold/60">
+            drams
+          </p>
+          <p className="font-mono text-[7px] tracking-[0.25em] uppercase text-ash-soft mt-0.5">
+            private membership
+          </p>
+        </div>
+      </div>
 
-      <p className="font-mono text-[10px] tracking-mono-eyebrow lowercase text-gold mb-3 relative">
-        drams
-      </p>
+      <div className="divider-gold mb-5" />
 
-      <p className="text-cream text-lg mb-1 relative">
+      {/* Member name */}
+      <p className="text-center text-cream text-base mb-6">
         {member.displayName}
       </p>
 
-      <div className="relative">
-        {numberDisplay ? (
-          <p className="font-mono text-xs tracking-mono-tight text-amber">
-            {t("member_number")} {numberDisplay}
+      {/* Number & Since */}
+      <div className="flex justify-between items-end">
+        <div>
+          <p className="font-mono text-[8px] tracking-[0.25em] uppercase text-ash-soft mb-1">
+            member no.
           </p>
-        ) : (
-          <p className="font-mono text-xs tracking-mono-tight text-ash-soft">
-            {t("member_number")} — {t("pending_issue")}
+          {numberDisplay ? (
+            <p className="font-serif text-3xl gold-text font-semibold leading-none">
+              {numberDisplay}
+            </p>
+          ) : (
+            <p className="font-mono text-xs text-ash-soft">
+              {t("pending_issue")}
+            </p>
+          )}
+        </div>
+        <div className="text-right">
+          <p className="font-mono text-[8px] tracking-[0.25em] uppercase text-ash-soft mb-1">
+            since
           </p>
-        )}
+          <p className="font-mono text-xs text-cream-soft">
+            {sinceDisplay}
+          </p>
+        </div>
       </div>
 
       {member.isPro && (
-        <div className="mt-3 relative">
-          <span className="font-mono text-[9px] tracking-mono-eyebrow lowercase px-2 py-0.5 rounded bg-gold/15 text-gold">
-            member
-          </span>
-        </div>
+        <>
+          <div className="divider-gold my-4" />
+          <div className="text-center">
+            <span className="font-mono text-[8px] tracking-[0.3em] uppercase px-3 py-1 rounded-full border border-gold/20 text-gold">
+              lifetime member
+            </span>
+          </div>
+        </>
       )}
     </div>
   );

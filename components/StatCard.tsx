@@ -6,11 +6,11 @@ export default function StatCard({
   value: string | number;
 }) {
   return (
-    <div className="bg-cask rounded-lg p-3 text-center border border-border-soft">
-      <p className="font-mono text-[10px] tracking-mono-eyebrow lowercase text-ash mb-1">
+    <div className="card p-3 text-center">
+      <p className="font-mono text-[7px] tracking-[0.25em] uppercase text-ash-soft mb-1.5">
         {label}
       </p>
-      <p className="font-serif text-2xl text-amber">{value}</p>
+      <p className="font-serif text-2xl gold-text font-semibold">{value}</p>
     </div>
   );
 }
