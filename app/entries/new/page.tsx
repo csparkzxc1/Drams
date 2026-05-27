@@ -33,6 +33,10 @@ export default function NewEntryPage() {
 
   // Step 1: Bottle
   const [bottleId, setBottleId] = useState<string | null>(null);
+  const [manualMode, setManualMode] = useState(false);
+  const [manualName, setManualName] = useState("");
+  const [manualDistillery, setManualDistillery] = useState("");
+  const [manualAbv, setManualAbv] = useState("");
 
   // Step 2: Nose
   const [nose, setNose] = useState("");
@@ -58,6 +62,7 @@ export default function NewEntryPage() {
 
   const handleSelectExisting = (b: Bottle) => {
     setBottleId(b.id);
+    setManualMode(false);
   };
 
   const handleSelectSeed = (w: SeedWhisky) => {
@@ -66,6 +71,7 @@ export default function NewEntryPage() {
     );
     if (existing) {
       setBottleId(existing.id);
+      setManualMode(false);
       return;
     }
     const now = new Date().toISOString();
@@ -84,6 +90,28 @@ export default function NewEntryPage() {
     };
     addBottle(newBottle);
     setBottleId(newBottle.id);
+    setManualMode(false);
+  };
+
+  const handleManualBottle = () => {
+    if (!manualName.trim() || !manualAbv) return;
+    const now = new Date().toISOString();
+    const newBottle: Bottle = {
+      id: uuid(),
+      name: manualName.trim(),
+      distillery: manualDistillery.trim() || manualName.trim(),
+      region: "Other",
+      type: "Other",
+      age: null,
+      abv: parseFloat(manualAbv),
+      caskStrength: false,
+      status: "tasted",
+      createdAt: now,
+      updatedAt: now,
+    };
+    addBottle(newBottle);
+    setBottleId(newBottle.id);
+    setManualMode(false);
   };
 
   const canProceed = () => {
@@ -154,14 +182,29 @@ export default function NewEntryPage() {
       {/* Step 1: Bottle selection */}
       {currentStep === "bottle" && (
         <div className="animate-fadeIn">
-          <h2 className="font-serif text-xl text-cream mb-4">보틀 선택</h2>
+          <h2 className="font-serif text-xl text-cream mb-1">어떤 위스키를 드셨나요?</h2>
+          <p className="text-ash text-xs mb-4">검색하거나, 셀러에서 고르거나, 직접 입력하세요</p>
 
           <WhiskySearch
             onSelect={handleSelectSeed}
             placeholder="위스키 이름 또는 증류소 검색..."
           />
 
-          {data.bottles.length > 0 && (
+          {selectedBottle && !manualMode && (
+            <div className="mt-4 bg-cask rounded-lg p-3 border border-amber/30">
+              <p className="font-mono text-[10px] tracking-mono-eyebrow lowercase text-amber mb-1">
+                선택됨
+              </p>
+              <p className="font-serif text-base text-cream">
+                {selectedBottle.name}
+              </p>
+              <p className="text-ash text-xs">
+                {selectedBottle.distillery} · {selectedBottle.region} · {selectedBottle.abv}%
+              </p>
+            </div>
+          )}
+
+          {data.bottles.length > 0 && !manualMode && (
             <div className="mt-5">
               <p className="font-mono text-[10px] tracking-mono-eyebrow lowercase text-ash mb-2">
                 내 셀러에서 선택
@@ -191,17 +234,62 @@ export default function NewEntryPage() {
             </div>
           )}
 
-          {selectedBottle && (
-            <div className="mt-4 bg-cask rounded-lg p-3 border border-amber/30">
-              <p className="font-mono text-[10px] tracking-mono-eyebrow lowercase text-amber mb-1">
-                선택됨
+          {!manualMode ? (
+            <button
+              type="button"
+              onClick={() => setManualMode(true)}
+              className="mt-4 w-full text-center py-2.5 border border-dashed border-border rounded-lg text-ash text-xs hover:border-ash transition-colors"
+            >
+              목록에 없는 위스키 직접 입력
+            </button>
+          ) : (
+            <div className="mt-4 bg-cask rounded-lg p-4 border border-border-soft animate-fadeIn">
+              <p className="font-mono text-[10px] tracking-mono-eyebrow lowercase text-gold mb-3">
+                직접 입력
               </p>
-              <p className="font-serif text-base text-cream">
-                {selectedBottle.name}
-              </p>
-              <p className="text-ash text-xs">
-                {selectedBottle.distillery} · {selectedBottle.region} · {selectedBottle.abv}%
-              </p>
+              <div className="space-y-3">
+                <input
+                  value={manualName}
+                  onChange={(e) => setManualName(e.target.value)}
+                  placeholder="위스키 이름 *"
+                  className="input-field"
+                />
+                <input
+                  value={manualDistillery}
+                  onChange={(e) => setManualDistillery(e.target.value)}
+                  placeholder="증류소 (선택)"
+                  className="input-field"
+                />
+                <input
+                  type="number"
+                  step="0.1"
+                  value={manualAbv}
+                  onChange={(e) => setManualAbv(e.target.value)}
+                  placeholder="ABV % *"
+                  className="input-field"
+                />
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setManualMode(false)}
+                    className="flex-1 py-2 rounded-lg text-xs text-ash bg-ink border border-border"
+                  >
+                    취소
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleManualBottle}
+                    disabled={!manualName.trim() || !manualAbv}
+                    className={`flex-1 py-2 rounded-lg text-xs transition-colors ${
+                      manualName.trim() && manualAbv
+                        ? "bg-amber text-ink"
+                        : "bg-amber/20 text-amber/40"
+                    }`}
+                  >
+                    추가
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>

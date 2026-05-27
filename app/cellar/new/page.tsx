@@ -21,15 +21,15 @@ const TYPES: WhiskyType[] = [
   "Bourbon", "Rye", "Irish", "Japanese", "Other",
 ];
 
-const STATUSES: { value: BottleStatus; label: string }[] = [
-  { value: "owned", label: "보유" },
-  { value: "tasted", label: "시음" },
-  { value: "wishlist", label: "위시" },
+const STATUSES: { value: BottleStatus; label: string; desc: string }[] = [
+  { value: "owned", label: "보유", desc: "가지고 있는 보틀" },
+  { value: "wishlist", label: "위시", desc: "마셔보고 싶은 보틀" },
+  { value: "tasted", label: "시음", desc: "마셔본 보틀" },
 ];
 
 export default function NewBottlePage() {
   const router = useRouter();
-  const { addBottle } = useStore();
+  const { addBottle, data } = useStore();
   const { t } = useI18n();
 
   const [name, setName] = useState("");
@@ -45,6 +45,13 @@ export default function NewBottlePage() {
   const [filled, setFilled] = useState(false);
 
   const handleSeedSelect = (w: SeedWhisky) => {
+    const existing = data.bottles.find(
+      (b) => b.name.toLowerCase() === w.name.toLowerCase()
+    );
+    if (existing) {
+      router.push(`/cellar/${existing.id}`);
+      return;
+    }
     setName(w.name);
     setDistillery(w.distillery);
     setRegion(w.region);
@@ -88,6 +95,36 @@ export default function NewBottlePage() {
           {t("new_bottle")}
         </h1>
       </header>
+
+      {/* Status selection first */}
+      <div className="mb-5">
+        <p className="font-mono text-[10px] tracking-mono-eyebrow lowercase text-ash mb-2">
+          어떤 보틀인가요?
+        </p>
+        <div className="flex gap-2">
+          {STATUSES.map((s) => (
+            <button
+              key={s.value}
+              type="button"
+              onClick={() => setStatus(s.value)}
+              className={`flex-1 py-2.5 rounded-lg text-center transition-colors ${
+                status === s.value
+                  ? "bg-amber text-ink"
+                  : "bg-cask text-ash border border-border"
+              }`}
+            >
+              <p className="text-xs font-mono tracking-mono-tight lowercase">
+                {s.label}
+              </p>
+              <p className={`text-[9px] mt-0.5 ${
+                status === s.value ? "text-ink/60" : "text-ash-soft"
+              }`}>
+                {s.desc}
+              </p>
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="mb-5">
         <label className="font-mono text-[10px] tracking-mono-eyebrow lowercase text-ash block mb-2">
@@ -191,32 +228,17 @@ export default function NewBottlePage() {
           </span>
         </label>
 
-        <div className="flex gap-2">
-          {STATUSES.map((s) => (
-            <button
-              key={s.value}
-              type="button"
-              onClick={() => setStatus(s.value)}
-              className={`flex-1 py-2 rounded-lg text-xs font-mono tracking-mono-tight lowercase transition-colors ${
-                status === s.value
-                  ? "bg-amber text-ink"
-                  : "bg-cask text-ash border border-border"
-              }`}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
-
-        <Field label="구매가 (₩)">
-          <input
-            type="number"
-            value={purchasePrice}
-            onChange={(e) => setPurchasePrice(e.target.value)}
-            placeholder="선택사항"
-            className="input-field"
-          />
-        </Field>
+        {status === "owned" && (
+          <Field label="구매가 (₩)">
+            <input
+              type="number"
+              value={purchasePrice}
+              onChange={(e) => setPurchasePrice(e.target.value)}
+              placeholder="선택사항"
+              className="input-field"
+            />
+          </Field>
+        )}
 
         <Field label="메모">
           <textarea

@@ -29,11 +29,21 @@ export default function CellarPage() {
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
+  const counts = {
+    all: data.bottles.length,
+    owned: data.bottles.filter((b) => b.status === "owned").length,
+    tasted: data.bottles.filter((b) => b.status === "tasted").length,
+    wishlist: data.bottles.filter((b) => b.status === "wishlist").length,
+  };
+
   return (
     <div className="px-4 pt-safe">
-      <header className="py-4">
+      <header className="flex items-center justify-between py-4">
         <h1 className="font-mono text-xs tracking-mono-eyebrow lowercase text-ash">
           {t("cellar")}
+          {data.bottles.length > 0 && (
+            <span className="text-amber ml-2">{data.bottles.length}</span>
+          )}
         </h1>
       </header>
 
@@ -48,14 +58,19 @@ export default function CellarPage() {
                 : "bg-cask text-ash border border-border"
             }`}
           >
-            {t(labelKey)}
+            {t(labelKey)} {counts[key] > 0 && `${counts[key]}`}
           </button>
         ))}
       </div>
 
       {sorted.length === 0 ? (
         <div className="flex flex-col items-center justify-center pt-24 text-center">
-          <p className="text-ash-soft text-sm">{t("no_bottles")}</p>
+          <p className="text-ash-soft text-sm mb-1">{t("no_bottles")}</p>
+          <p className="text-ash text-xs">
+            {filter === "all"
+              ? "노트를 기록하면 자동으로 추가됩니다"
+              : `${t(filter)} 보틀이 없습니다`}
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-3 pb-4">
