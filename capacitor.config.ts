@@ -5,8 +5,7 @@ const config: CapacitorConfig = {
   appName: "Drams",
   webDir: "out",
   server: {
-    // Vercel 배포 URL로 교체 (배포 후)
-    // url: "https://drams.vercel.app",
+    url: "https://drams-six.vercel.app",
     androidScheme: "https",
   },
   ios: {
