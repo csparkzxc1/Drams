@@ -12,12 +12,12 @@ function MemberNumberIssuer() {
   useEffect(() => {
     if (data.member.memberNumber !== null) return;
 
-    issueMemberNumber().then((num) => {
+    issueMemberNumber(data.member.id).then((num) => {
       if (num !== null) {
         updateMember({ memberNumber: num });
       }
     });
-  }, [data.member.memberNumber, updateMember]);
+  }, [data.member.id, data.member.memberNumber, updateMember]);
 
   return null;
 }
