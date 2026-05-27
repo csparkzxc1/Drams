@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { IconPlus } from "@tabler/icons-react";
 import { useStore } from "@/lib/store";
 import { useI18n } from "@/lib/i18n";
+import { IMAGES } from "@/lib/images";
 import type { BottleStatus } from "@/lib/types";
 import BottleTile from "@/components/BottleTile";
 
@@ -37,54 +39,71 @@ export default function CellarPage() {
   };
 
   return (
-    <div className="px-4 pt-safe">
-      <header className="flex items-center justify-between py-4">
-        <h1 className="font-mono text-xs tracking-mono-eyebrow lowercase text-ash">
-          {t("cellar")}
+    <div className="pt-safe">
+      {/* Hero header */}
+      <div className="relative h-36 overflow-hidden">
+        <Image
+          src={IMAGES.cellarBottles}
+          alt=""
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-ink/60 to-ink" />
+        <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
+          <h1 className="font-serif text-3xl text-cream">Cellar</h1>
           {data.bottles.length > 0 && (
-            <span className="text-amber ml-2">{data.bottles.length}</span>
+            <p className="font-mono text-[9px] tracking-[0.2em] uppercase text-cream-soft mt-1">
+              {data.bottles.length} bottles
+            </p>
           )}
-        </h1>
-      </header>
-
-      <div className="flex gap-2 mb-4 overflow-x-auto">
-        {filters.map(({ key, labelKey }) => (
-          <button
-            key={key}
-            onClick={() => setFilter(key)}
-            className={`px-3 py-1.5 rounded-full text-xs font-mono tracking-mono-tight lowercase whitespace-nowrap transition-colors ${
-              filter === key
-                ? "bg-amber text-ink"
-                : "bg-cask text-ash border border-border"
-            }`}
-          >
-            {t(labelKey)} {counts[key] > 0 && `${counts[key]}`}
-          </button>
-        ))}
+        </div>
       </div>
 
-      {sorted.length === 0 ? (
-        <div className="flex flex-col items-center justify-center pt-24 text-center">
-          <p className="text-ash-soft text-sm mb-1">{t("no_bottles")}</p>
-          <p className="text-ash text-xs">
-            {filter === "all"
-              ? "노트를 기록하면 자동으로 추가됩니다"
-              : `${t(filter)} 보틀이 없습니다`}
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 gap-3 pb-4">
-          {sorted.map((bottle) => (
-            <BottleTile key={bottle.id} bottle={bottle} />
+      <div className="px-4">
+        <div className="flex gap-2 py-4 overflow-x-auto">
+          {filters.map(({ key, labelKey }) => (
+            <button
+              key={key}
+              onClick={() => setFilter(key)}
+              className={`px-3 py-1.5 rounded-full text-[10px] font-mono tracking-[0.15em] uppercase whitespace-nowrap transition-colors ${
+                filter === key
+                  ? "bg-gold text-ink"
+                  : "text-ash border border-border"
+              }`}
+            >
+              {t(labelKey)} {counts[key] > 0 ? counts[key] : ""}
+            </button>
           ))}
         </div>
-      )}
+
+        {sorted.length === 0 ? (
+          <div className="flex flex-col items-center justify-center pt-20 text-center">
+            <p className="text-ash-soft text-sm mb-1">{t("no_bottles")}</p>
+            <p className="text-ash-soft text-xs">
+              {filter === "all"
+                ? "노트를 기록하면 자동으로 추가됩니다"
+                : `${t(filter)} 보틀이 없습니다`}
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-3 pb-4">
+            {sorted.map((bottle) => (
+              <BottleTile key={bottle.id} bottle={bottle} />
+            ))}
+          </div>
+        )}
+      </div>
 
       <Link
         href="/cellar/new"
-        className="fixed right-4 bottom-20 z-40 flex items-center justify-center w-14 h-14 rounded-full bg-amber text-ink shadow-lg active:scale-95 transition-transform"
+        className="fixed right-5 bottom-20 z-40 flex items-center justify-center rounded-full shadow-lg active:scale-95 transition-transform"
+        style={{
+          background: "linear-gradient(135deg, #D4A056, #C9842B)",
+          width: 52,
+          height: 52,
+        }}
       >
-        <IconPlus size={24} stroke={2} />
+        <IconPlus size={22} stroke={2} className="text-ink" />
       </Link>
     </div>
   );
