@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { IconPlus } from "@tabler/icons-react";
 import { useStore } from "@/lib/store";
 import { useI18n } from "@/lib/i18n";
 import { IMAGES } from "@/lib/images";
+import HeroHeader from "@/components/HeroHeader";
 import type { BottleStatus } from "@/lib/types";
 import BottleTile from "@/components/BottleTile";
 
@@ -40,24 +40,12 @@ export default function CellarPage() {
 
   return (
     <div className="pt-safe">
-      {/* Hero header */}
-      <div className="relative h-36 overflow-hidden">
-        <Image
-          src={IMAGES.cellarBottles}
-          alt=""
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-ink/60 to-ink" />
-        <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
-          <h1 className="font-serif text-3xl text-cream">Cellar</h1>
-          {data.bottles.length > 0 && (
-            <p className="font-mono text-[9px] tracking-[0.2em] uppercase text-cream-soft mt-1">
-              {data.bottles.length} bottles
-            </p>
-          )}
-        </div>
-      </div>
+      <HeroHeader
+        src={IMAGES.cellarBottles}
+        title="Cellar"
+        subtitle={data.bottles.length > 0 ? `${data.bottles.length} bottles` : undefined}
+        height="h-36"
+      />
 
       <div className="px-4">
         <div className="flex gap-2 py-4 overflow-x-auto">

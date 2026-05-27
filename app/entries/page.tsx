@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { IconPlus } from "@tabler/icons-react";
 import { useStore } from "@/lib/store";
 import { useI18n } from "@/lib/i18n";
 import { IMAGES } from "@/lib/images";
+import HeroHeader from "@/components/HeroHeader";
 import EntryCard from "@/components/EntryCard";
 
 export default function EntriesPage() {
@@ -18,25 +18,11 @@ export default function EntriesPage() {
 
   return (
     <div className="pt-safe">
-      {/* Hero header */}
-      <div className="relative h-44 overflow-hidden">
-        <Image
-          src={IMAGES.heroGlass}
-          alt=""
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-ink/60 to-ink" />
-        <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
-          <h1 className="font-serif text-3xl text-cream">Drams</h1>
-          {sorted.length > 0 && (
-            <p className="font-mono text-[9px] tracking-[0.2em] uppercase text-cream-soft mt-1">
-              {sorted.length} tasting notes
-            </p>
-          )}
-        </div>
-      </div>
+      <HeroHeader
+        src={IMAGES.heroGlass}
+        title="Drams"
+        subtitle={sorted.length > 0 ? `${sorted.length} tasting notes` : undefined}
+      />
 
       <div className="px-4">
         {sorted.length === 0 ? (

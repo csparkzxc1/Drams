@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useStore } from "@/lib/store";
 import { useI18n } from "@/lib/i18n";
 import { IMAGES } from "@/lib/images";
+import HeroHeader from "@/components/HeroHeader";
 import MemberCard from "@/components/MemberCard";
 import Link from "next/link";
 import { IconSettings } from "@tabler/icons-react";
@@ -14,27 +14,19 @@ export default function MemberPage() {
 
   return (
     <div className="pt-safe pb-20">
-      {/* Hero header */}
-      <div className="relative h-36 overflow-hidden">
-        <Image
-          src={IMAGES.barMood}
-          alt=""
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/50 via-ink/70 to-ink" />
-        <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 flex items-end justify-between">
-          <h1 className="font-serif text-3xl text-cream">Member</h1>
-          <Link href="/member/settings" className="text-cream-soft p-1">
-            <IconSettings size={20} stroke={1.3} />
-          </Link>
-        </div>
-      </div>
+      <HeroHeader
+        src={IMAGES.barMood}
+        title="Member"
+        height="h-36"
+      >
+        <Link href="/member/settings" className="text-cream-soft p-1">
+          <IconSettings size={20} stroke={1.3} />
+        </Link>
+      </HeroHeader>
 
       <div className="px-4 pt-4">
         <MemberCard />
 
-        {/* Stats row */}
         <div className="grid grid-cols-3 gap-3 mt-6">
           <div className="card p-3 text-center">
             <p className="font-mono text-[7px] tracking-[0.25em] uppercase text-ash-soft mb-1">
@@ -62,13 +54,7 @@ export default function MemberPage() {
           </div>
         </div>
 
-        {/* Membership CTA */}
         <div className="card-gold shimmer mt-8 p-6 text-center">
-          <div className="flex justify-center mb-3">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="opacity-50">
-              <path d="M12 2L14.5 8.5H21L15.5 12.5L17.5 19L12 15L6.5 19L8.5 12.5L3 8.5H9.5L12 2Z" stroke="#D4A056" strokeWidth="0.75"/>
-            </svg>
-          </div>
           <h2 className="font-mono text-[8px] tracking-[0.3em] uppercase text-gold mb-2">
             drams members
           </h2>
